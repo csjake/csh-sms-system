@@ -1,0 +1,1 @@
+﻿Add-Migration Additions -Project ScheduleSqlite -StartupProject EFToolsDummy

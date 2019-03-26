@@ -7,6 +7,9 @@ namespace ScheduleSqlite
     {
 
         string _connectionString;
+        public ScheduleDbContext(DbContextOptions options) :base (options)
+        {}
+
         public ScheduleDbContext(string connectionString)
         {
             _connectionString = connectionString;

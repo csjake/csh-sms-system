@@ -8,6 +8,7 @@ namespace ScheduleModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public ContactProperty ContactProperty { get; set; }
         public List<ScheduleItem> ScheduleItems { get; set; }
     }
 }
