@@ -1,0 +1,1 @@
+﻿Add-Migration Additions -Project ScheduleModel -StartupProject EFToolsDummy

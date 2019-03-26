@@ -7,9 +7,6 @@ namespace ScheduleSqlite
     {
 
         string _connectionString;
-        public ScheduleDbContext(DbContextOptions options) :base (options)
-        {}
-
         public ScheduleDbContext(string connectionString)
         {
             _connectionString = connectionString;
@@ -22,6 +19,8 @@ namespace ScheduleSqlite
             }
         }
 
+        public ScheduleDbContext(DbContextOptions options) :base (options)
+        {}        
         public virtual DbSet<Schedule> Schedules { get; set; }
         public virtual DbSet<MessageTemplate> MessageTempaltes { get; set; }
         public virtual DbSet<ScheduleItem> ScheduleItems { get; set; }

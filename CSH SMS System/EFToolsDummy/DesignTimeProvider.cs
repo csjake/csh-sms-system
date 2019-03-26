@@ -2,14 +2,16 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using ScheduleSqlite;
+using ScheduleModel;
 namespace EFToolsDummy
 {
     public class DesignTimeProvider : IDesignTimeDbContextFactory<ScheduleDbContext>
     {
         public ScheduleDbContext CreateDbContext(string[] args)
         {
-            return new ScheduleDbContext("DesignTime.db");
+            var optionsBuilder = new DbContextOptionsBuilder<ScheduleDbContext>();
+            optionsBuilder.UseSqlite("DataSource=DesignTime.db");
+            return new ScheduleDbContext(optionsBuilder.Options);
         }
     }
 }

@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ScheduleDbContext.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ScheduleModel\ScheduleModel.csproj" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.3" />

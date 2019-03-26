@@ -16,5 +16,9 @@ namespace ScheduleModel
         public string MotherName { get; set; }
         public string ChildName { get; set; }
         public bool IsMother { get; set; }
+        public DateTime MmrDate { get; set; }
+        public DateTime PentaDate { get; set; }
+        public DateTime PrenatalDate { get; set; }
+        public DateTime UploadDate { get; set; }
     }
 }
