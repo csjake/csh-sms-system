@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using ScheduleModel;
 namespace EFToolsDummy
 {
+    //this is used by "Add-Migration"
     public class DesignTimeProvider : IDesignTimeDbContextFactory<ScheduleDbContext>
     {
         public ScheduleDbContext CreateDbContext(string[] args)

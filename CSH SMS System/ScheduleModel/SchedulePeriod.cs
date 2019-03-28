@@ -2,10 +2,12 @@
 
 namespace ScheduleModel
 {
-    public class SchedulePeriod
+    public enum SchedulePeriod
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public List<ScheduleItemReminder> ScheduleItems { get; set; }
+        Days,
+        Weeks,
+        Months,
+        Years
     }
+    
 }
