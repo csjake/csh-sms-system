@@ -67,6 +67,7 @@
     <EmbeddedResource Include="ScheduleForm.resx">
       <DependentUpon>ScheduleForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Properties\DataSources\ScheduleModel.ContactProperty.datasource" />
     <None Include="Properties\DataSources\ScheduleModel.MessageTemplate.datasource" />
     <None Include="Properties\DataSources\ScheduleModel.Schedule.datasource" />
     <None Include="Properties\DataSources\ScheduleModel.ScheduleItem.datasource" />

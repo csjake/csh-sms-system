@@ -7,6 +7,6 @@ namespace ScheduleModel
         public int Id { get; set; }
         public string Name { get; set; }        
         public List<Translation> Translations { get; set; }
-        public List<ScheduleItem> ScheduleItems { get; set; }
+        public List<ScheduleItemReminder> ScheduleItems { get; set; }
     }
 }

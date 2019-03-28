@@ -9,7 +9,7 @@ namespace ScheduleModel
         {}        
         public virtual DbSet<Schedule> Schedules { get; set; }
         public virtual DbSet<MessageTemplate> MessageTempaltes { get; set; }
-        public virtual DbSet<ScheduleItem> ScheduleItems { get; set; }
+        public virtual DbSet<ScheduleItemReminder> ScheduleItems { get; set; }
         public virtual DbSet<Language> Languages { get; set; }
         public virtual DbSet<ContactProperty> ContactProperties { get; set; }
         public virtual DbSet<Translation> Translations { get; set; }
