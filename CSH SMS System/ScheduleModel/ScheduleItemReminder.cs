@@ -7,6 +7,6 @@
         public SchedulePeriod Period { get; set; }
         public int PeriodQuantity { get; set; }
         public BeforeAfter BeforeAfter { get; set; }        
-        public MessageTemplate Message { get; set; }
+        public MessageStub Message { get; set; }
     }
 }

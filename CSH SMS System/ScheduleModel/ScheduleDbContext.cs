@@ -8,11 +8,11 @@ namespace ScheduleModel
         public ScheduleDbContext(DbContextOptions options) :base (options)
         {}        
         public virtual DbSet<Schedule> Schedules { get; set; }
-        public virtual DbSet<MessageTemplate> MessageTempaltes { get; set; }
+        public virtual DbSet<MessageStub> MessageStubs { get; set; }
         public virtual DbSet<ScheduleItem> ScheduleItems { get; set; }
         public virtual DbSet<ScheduleItemReminder> ScheduleItemReminders { get; set; }
         public virtual DbSet<Language> Languages { get; set; }
         public virtual DbSet<ContactProperty> ContactProperties { get; set; }
-        public virtual DbSet<Translation> Translations { get; set; }
+        public virtual DbSet<MessageImplementation> MessageImplementations { get; set; }
     }
 }

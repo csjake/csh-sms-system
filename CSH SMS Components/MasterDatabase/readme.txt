@@ -1,0 +1,2 @@
+﻿Add-Migration Init -Project MasterDatabase -StartupProject EfToolsDummy
+	-StartupProject EFToolsDummy: this tells it to use EFToolsDummy to find the .NET Core runtime.  In EFToolsDummy, there is a class which provides the actual DbContext, where you can specify the database location

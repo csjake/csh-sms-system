@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+<ItemGroup>
+  <ProjectReference Include="..\MasterDatabase\MasterDatabase.csproj" />
+  <ProjectReference Include="..\Utils\Utils.csproj" />
+  <PackageReference Include="ChoETL.JSON.NETStandard" Version="1.1.0.1" />
+  <PackageReference Include="System.Security.Permissions" Version="4.0.0.0" />
+  <PackageReference Include="Telerivet.NET" Version="1.4.1" />
+</ItemGroup>
+</Project>
