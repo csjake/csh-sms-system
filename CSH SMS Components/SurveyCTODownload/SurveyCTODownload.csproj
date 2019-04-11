@@ -5,7 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MasterDatabase\MasterDatabase.csproj" />
     <ProjectReference Include="..\Utils\Utils.csproj" />
+    <PackageReference Include="ChoETL.JSON.NETStandard" Version="1.1.0.1" />
   </ItemGroup>
 
 </Project>

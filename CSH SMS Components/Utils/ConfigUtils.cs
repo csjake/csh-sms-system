@@ -37,8 +37,7 @@ namespace Utils
                     Type t = typeof(T);
                     //property/prompt mapping 
                     var mappings = (from prop in t.GetProperties()
-                                    select new
-                                    {
+                                    select new {
                                         prop,
                                         attr = (ConfigPromptName)prop.GetCustomAttributes(false).SingleOrDefault(c => c is ConfigPromptName)
                                     }).Where(m => m.attr != null);
@@ -50,10 +49,18 @@ namespace Utils
 
                         bool readSuccess = false;
                         while (readSuccess == false)
-                        {
+                        {                           
                             try
-                            {                                
-                                var value = JsonConvert.DeserializeObject(userValue, mapping.prop.PropertyType);// Convert.ChangeType(userValue, mapping.prop.PropertyType);
+                            {
+                                Object value = null;
+                                if (mapping.prop.PropertyType.GetInterface("IConvertible") != null)
+                                {
+                                    value = Convert.ChangeType(userValue, mapping.prop.PropertyType);
+                                }
+                                else
+                                {
+                                    value = JsonConvert.DeserializeObject(userValue, mapping.prop.PropertyType);//
+                                }
                                 mapping.prop.SetValue(conf, value);
                                 readSuccess = true;
                             }

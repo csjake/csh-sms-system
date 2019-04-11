@@ -34,4 +34,40 @@ namespace Utils
             return DateTime.ParseExact(date, "yyyy-MM-dd", MyCultureInfo);
         }
     }
+
+    public class DateTimeSurveyCTOStringConverter
+    {
+        public static DateTime? ConvertToDateTimeNullable(string surveyCtoDate)
+        {
+            if (surveyCtoDate == "") return null;
+            return ConvertToDateTime(surveyCtoDate);
+        }
+
+        public static DateTime ConvertToDateTime(string surveyCtoDate)
+        {           
+            CultureInfo provider = CultureInfo.InvariantCulture;
+            return DateTime.ParseExact(surveyCtoDate, "MMM d, yyyy", provider);
+        }
+
+        public static DateTime ConvertSurveyCTODateTimeToDateTime(string surveyCtoDateTime)
+        {
+            CultureInfo provider = CultureInfo.InvariantCulture;
+            return DateTime.ParseExact(surveyCtoDateTime, "MMM d, yyyy h:mm:ss tt", provider);
+        }
+      
+  
+        //static string ConvertSurveyCtoDateTimeToTelerivetDate(string surveyCtoDate)
+        //{
+        //    if (surveyCtoDate == "") return surveyCtoDate;
+        //    CultureInfo provider = CultureInfo.InvariantCulture;
+        //    return DateTime.ParseExact(surveyCtoDate, "MMM d, yyyy h:mm:ss tt", provider).ToString("yyyy-MM-dd");
+        //}
+
+        //static string ConvertSurveyCtoDateToTelerivetDate(string surveyCtoDate)
+        //{
+        //    if (surveyCtoDate == "") return surveyCtoDate;
+        //    CultureInfo provider = CultureInfo.InvariantCulture;
+        //    return DateTime.ParseExact(surveyCtoDate, "MMM d, yyyy", provider).ToString("yyyy-MM-dd");
+        //}
+    }
 }
