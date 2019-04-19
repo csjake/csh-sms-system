@@ -6,9 +6,14 @@ namespace Utils
 {
     public class StringLongConverter
     {
-        public static  long ConvertToLong(string input)
+        public static long? ConvertToLong(string input)
         {
-            return input == null ? 0 : long.Parse(input);
+            long result;
+            if (!long.TryParse(input, out result))
+            {
+                return null;
+            };
+            return result;            
         }
 
     }

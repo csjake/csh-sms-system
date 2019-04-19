@@ -21,13 +21,18 @@ namespace Utils
         }
     }
 
-    public class DateTimeTelerivetTimeStringConverter
+    public class DateTimeTelerivetDateStringConverter
     {
         private static CultureInfo MyCultureInfo = new CultureInfo("en-US");
         public static DateTime? ToDateTimeNullable(string date)
         {
-            if (date == null) return null;          
-            return DateTime.ParseExact(date, "yyyy-MM-dd", MyCultureInfo);
+            if (string.IsNullOrEmpty(date) || date == "Invalid date") return null;
+            DateTime result;
+            if (!DateTime.TryParseExact(date, "yyyy-MM-dd", MyCultureInfo, DateTimeStyles.None, out result))
+            {
+                result = DateTime.Parse(date, MyCultureInfo);
+            }
+            return result;
         }        
         public static DateTime ToDateTime(string date)
         {           
@@ -35,12 +40,26 @@ namespace Utils
         }
     }
 
+    public class DateTimeTelerivetDateTimeStringConverter
+    {
+        private static CultureInfo MyCultureInfo = new CultureInfo("en-US");
+        public static DateTime? ToDateTimeNullable(string date)
+        {
+            if (string.IsNullOrEmpty(date)) return null;
+            return DateTime.ParseExact(date, "yyyy-MM-dd HH:mm:ss", MyCultureInfo);
+        }
+        public static DateTime ToDateTime(string date)
+        {
+            return DateTime.ParseExact(date, "yyyy-MM-dd HH:mm:ss", MyCultureInfo);
+        }
+    }
+
     public class DateTimeSurveyCTOStringConverter
     {
-        public static DateTime? ConvertToDateTimeNullable(string surveyCtoDate)
+        public static DateTime? ConvertToDateTimeNullable(string date)
         {
-            if (surveyCtoDate == "") return null;
-            return ConvertToDateTime(surveyCtoDate);
+            if (string.IsNullOrEmpty(date)) return null;
+            return ConvertToDateTime(date);
         }
 
         public static DateTime ConvertToDateTime(string surveyCtoDate)

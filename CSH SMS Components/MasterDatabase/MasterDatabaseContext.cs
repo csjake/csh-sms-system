@@ -10,6 +10,9 @@ namespace MasterDatabase
     {
         public MasterDatabaseContext(DbContextOptions options) : base(options)
         { }
+        public DbSet<Log> Logs { get; set; }
+        public DbSet<SyncInfo> SyncInfos { get; set; }
+        public DbSet<LogReferences> LogReferences { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<GroupContact> GroupContacts { get; set; }
@@ -34,11 +37,14 @@ namespace MasterDatabase
             modelBuilder.Entity<GroupContact>()
                 .HasKey(t => new { t.GroupId, t.ContactId });
 
-            modelBuilder.Entity<TelerivetContact>().Property(e => e.MmrBaseDate).HasConversion(converter);
-            modelBuilder.Entity<TelerivetContact>().Property(e => e.PentaBaseDate).HasConversion(converter);
-            modelBuilder.Entity<TelerivetContact>().Property(e => e.PrenatalBaseDate).HasConversion(converter);
-            modelBuilder.Entity<TelerivetContact>().Property(e => e.SourceDate).HasConversion(converter);
-            modelBuilder.Entity<TelerivetContact>().Property(e => e.TimeCreated).HasConversion(converter);
+            //modelBuilder.Entity<TelerivetContact>().Property(e => e.MmrBaseDate).HasConversion(converter);
+            //modelBuilder.Entity<TelerivetContact>().Property(e => e.PentaBaseDate).HasConversion(converter);
+            //modelBuilder.Entity<TelerivetContact>().Property(e => e.PrenatalBaseDate).HasConversion(converter);
+            //modelBuilder.Entity<TelerivetContact>().Property(e => e.SourceDate).HasConversion(converter);
+            //modelBuilder.Entity<TelerivetContact>().Property(e => e.TimeCreated).HasConversion(converter);
+
+            //modelBuilder.Entity<TelerivetMessageV1>().Property(e => e.TimeCreated).HasConversion(converter);
+            //modelBuilder.Entity<TelerivetMessageV1>().Property(e => e.TimeSent).HasConversion(converter);
 
         }
 
@@ -48,7 +54,8 @@ namespace MasterDatabase
             optionsBuilder.UseSqlite(@"DataSource=G:\Team Drives\Reporting_Restricted\CSH\Master\dev.db");
 
             var db = new MasterDatabaseContext(optionsBuilder.Options);
-            db.Database.Migrate();
+            db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
             return db;
         }
     }

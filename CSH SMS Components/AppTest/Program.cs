@@ -24,7 +24,8 @@ namespace AppTest
             //{
             //    Console.WriteLine(ex.ToString());
             //}
-            nexmoContactsAdd();
+            var conf = Utils.ConfigUtils.LoadOrPrompt<TelerivetDownload.TelerivetApiConfig>();
+            ContactAndGroupDownloader.DownloadV1(conf);
             Console.ReadLine();
         }
 

@@ -1,66 +1,48 @@
-﻿//using Newtonsoft.Json.Linq;
-using System;
-using System.Linq;
-using Telerivet.Client;
-using ChoETL;
-using Utils;
+﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Text;
 using MasterDatabase;
+using SyncBase;
+using Telerivet.Client;
+using Utils;
+using Newtonsoft;
+using Newtonsoft.Json.Linq;
 
 namespace TelerivetDownload
 {
-   
-    public class ContactAndGroupDownloader
-    {       
-        public static void DownloadV2(TelerivetApiConfig conf)
+    public class ContactV1Sync : Sync<Telerivet.Client.Contact, MasterDatabase.TelerivetContactV1>
+    {
+        private TelerivetApiConfig conf;
+        public ContactV1Sync(MasterDatabaseContext dbContext, TelerivetApiConfig conf) : base(dbContext)
         {
-            TelerivetAPI tr = new TelerivetAPI(conf.TelerivetAPIKey);
-            Project project = tr.InitProjectById("PJa76127e2eb4dcc83");
-
-            var result = (from c in project.QueryContacts().AllAsync().Result select new MasterDatabase.TelerivetContact {
-                Id = c.Id,
-                SendBlocked = c.SendBlocked,
-                TimeCreated = DateTimeUnixTimeStampConverter.ToDateTime(c.TimeCreated),
-                LastContacted = DateTimeUnixTimeStampConverter.ToDateTime(c.LastOutgoingMessageTime.GetValueOrDefault()),
-                LastHeardFrom = DateTimeUnixTimeStampConverter.ToDateTime(c.LastIncomingMessageTime.GetValueOrDefault()),
-                OutgoingMessageCount = c.OutgoingMessageCount,
-                IncomingMessageCount = c.IncomingMessageCount,
-                PhoneNumber = c.PhoneNumber,
-                Name = c.Name,
-                ProjectId = c.ProjectId,                
-                GroupIds = c.GroupIds.ToString(),
-                MotherName = c.Vars.Get("mother_name")?.ToString(),
-                ChildName = c.Vars.Get("child_name")?.ToString(),
-                MmrBaseDate = DateTimeTelerivetDateStringConverter.ToDateTimeNullable(c.Vars.Get("mmr_base_date")?.ToString()),
-                PentaBaseDate = DateTimeTelerivetDateStringConverter.ToDateTimeNullable(c.Vars.Get("penta_base_date")?.ToString()),
-                PrenatalBaseDate = DateTimeTelerivetDateStringConverter.ToDateTimeNullable(c.Vars.Get("prenatal_base_date")?.ToString()),
-                SourceDate = DateTimeTelerivetDateStringConverter.ToDateTime(c.Vars.Get("source_date").ToString()),
-                SourceType = c.Vars.Get("source_type").ToString(),
-                SourceKey = c.Vars.Get("source_key").ToString(),
-            }).ToList();
-
-            var trGroups = (from g in project.QueryGroups().AllAsync().Result select new MasterDatabase.TelerivetGroup { Id = g.Id, Name = g.Name });
-
-            var db = MasterDatabaseContext.CreateDevDB();
-            db.Database.ExecuteSqlCommand("Delete From TelerivetGroups;");
-            db.TelerivetGroups.AddRange(trGroups);
-            db.Database.ExecuteSqlCommand("Delete From TelerivetContacts;");
-            db.TelerivetContacts.AddRange(result);
-            db.SaveChanges();
-                        
-            Console.WriteLine("test");         
+            this.conf = conf;
         }
 
-        public static void DownloadV1(TelerivetApiConfig conf)
+        public override SyncInfo CreateNewSyncInfo(DateTime startTime, List<TelerivetContactV1> newDestData)
+        {
+            var minDate = (from tc in newDestData
+                           select tc.TimeCreated).Min();
+            var maxDate = (from tc in newDestData
+                           select tc.TimeCreated).Max();
+            return new SyncInfo(startTime, DateTime.Now.ToUniversalTime(), typeof(TelerivetContactV1).Name, minDate, maxDate);
+        }
+
+        public override List<Telerivet.Client.Contact> GetNewSourceData(SyncInfo sync)
         {
             TelerivetAPI tr = new TelerivetAPI(conf.TelerivetAPIKey);
-            Project project = tr.InitProjectById("PJedf9c2a646a87abc");            
-            var tcontacts = project.QueryContacts().AllAsync().Result;
+            Project project = tr.InitProjectById("PJedf9c2a646a87abc");
+            var unixDateMin = DateTimeUnixTimeStampConverter.ToUnixTimeStamp(sync.SetMaxDate);
+            var options = new { time_created = new {min = unixDateMin } };            
+            var joptions = JObject.FromObject(options);
+            var tcontacts = project.QueryContacts(joptions).AllAsync().Result;
+            return tcontacts;
+        }
+
+        public override List<TelerivetContactV1> TransformSourceToDest(List<Telerivet.Client.Contact> newSourceData)
+        {
             var result = new List<TelerivetContactV1>();
-            foreach(var c in tcontacts)
+            foreach (var c in newSourceData)
             {
                 var contact = new MasterDatabase.TelerivetContactV1();
                 contact.Id = c.Id;
@@ -131,15 +113,10 @@ namespace TelerivetDownload
                 contact.penta3_date = DateTimeTelerivetDateStringConverter.ToDateTimeNullable(c.Vars.Get("penta3_date")?.ToString());
                 contact.mmr1_date = DateTimeTelerivetDateStringConverter.ToDateTimeNullable(c.Vars.Get("mmr1_date")?.ToString());
                 result.Add(contact);
-            }   
+            }
 
-            var trGroups = (from g in project.QueryGroups().AllAsync().Result select new MasterDatabase.TelerivetGroupV1 { Id = g.Id, Name = g.Name });
-            var db = MasterDatabaseContext.CreateDevDB();
-            db.Database.ExecuteSqlCommand("Delete From TelerivetGroupV1s;");
-            db.TelerivetGroupV1s.AddRange(trGroups);
-            db.Database.ExecuteSqlCommand("Delete From TelerivetContactV1s;");
-            db.TelerivetContactV1s.AddRange(result);
-            db.SaveChanges();
+            return result;
+
         }
     }
 }

@@ -21,7 +21,7 @@ namespace MasterDatabase
         public string org_sign_up { get; set; }
         public string method_of_sign_up { get; set; }
         public DateTime? date_uploaded { get; set; }
-        public long delay_in_days { get; set; }
+        public long? delay_in_days { get; set; }
         public DateTime? functional_dob { get; set; }
         public string hospital_registration_no_ { get; set; }
         public string pregnant_ { get; set; }
@@ -42,7 +42,7 @@ namespace MasterDatabase
         public string city { get; set; }
         public string enrol_ { get; set; }
         public DateTime? date_of_birth { get; set; }
-        public long age_in_weeks { get; set; }
+        public long? age_in_weeks { get; set; }
         public string caregiver_s_name { get; set; }
         public string caregiver_s_relationship { get; set; }
         public string mother_s_first { get; set; }
